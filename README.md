@@ -4,11 +4,17 @@
 
 #### 目录结构
 
-TODO
+```
+|-- packages
+  |-- react
+  |-- react-dom
+
+...
+```
 
 #### React 相关文章整理
 
-* [React 中 setState](https://github.com/YangYmimi/read-react/issues/1)
+- [React 中 setState](https://github.com/YangYmimi/read-react/issues/1)
 
 ### Read Redux
 
