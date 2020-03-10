@@ -7,6 +7,7 @@
 ```
 |-- packages
   |-- react
+    |-- index.js 导出了常用的组件
   |-- react-dom
 
 ...
