@@ -1,12 +1,14 @@
 # React Bucket
 
-### Read React
+### Read React (v16.13.0)
 
 #### 目录结构
 
 ```
 |-- packages
   |-- react
+    |-- src
+      |-- ReactBaseClasses.js 定义了 Component, PureComponent
     |-- index.js 导出了常用的组件
   |-- react-dom
 
@@ -21,6 +23,6 @@
 
 #### Redux 相关文章整理
 
-<!-- * [Redux 中 reselect 的实现](https://github.com/YangYmimi/read-react/issues/1) -->
+- [源码阅读 - reselect 实现]()
 
 ### References

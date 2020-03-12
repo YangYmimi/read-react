@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import invariant from 'shared/invariant';
+import invariant from "shared/invariant";
 
-import ReactNoopUpdateQueue from './ReactNoopUpdateQueue';
+import ReactNoopUpdateQueue from "./ReactNoopUpdateQueue";
 
 const emptyObject = {};
 if (__DEV__) {
@@ -17,6 +17,7 @@ if (__DEV__) {
 /**
  * Base class helpers for the updating state of a component.
  */
+// 用于更新组件的状态
 function Component(props, context, updater) {
   this.props = props;
   this.context = context;
@@ -24,6 +25,7 @@ function Component(props, context, updater) {
   this.refs = emptyObject;
   // We initialize the default updater but the real one gets injected by the
   // renderer.
+  // 初始化更新器，但是真正在 renderer 环节被注入
   this.updater = updater || ReactNoopUpdateQueue;
 }
 
@@ -40,6 +42,7 @@ Component.prototype.isReactComponent = {};
  * as they may eventually be batched together.  You can provide an optional
  * callback that will be executed when the call to setState is actually
  * completed.
+ * 这边说了不能保证 setState 是同步执行的，有可能批量执行
  *
  * When a function is provided to setState, it will be called at some point in
  * the future (not synchronously). It will be called with the up to date
@@ -54,15 +57,17 @@ Component.prototype.isReactComponent = {};
  * @final
  * @protected
  */
+// 所有的类组件都有 setState 方法
 Component.prototype.setState = function(partialState, callback) {
   invariant(
-    typeof partialState === 'object' ||
-      typeof partialState === 'function' ||
+    typeof partialState === "object" ||
+      typeof partialState === "function" ||
       partialState == null,
-    'setState(...): takes an object of state variables to update or a ' +
-      'function which returns an object of state variables.',
+    "setState(...): takes an object of state variables to update or a " +
+      "function which returns an object of state variables."
   );
-  this.updater.enqueueSetState(this, partialState, callback, 'setState');
+  // 默认情况下使用的是 ReactNoopUpdateQueue.js 中的 enqueueSetState 方法
+  this.updater.enqueueSetState(this, partialState, callback, "setState");
 };
 
 /**
@@ -74,13 +79,14 @@ Component.prototype.setState = function(partialState, callback) {
  *
  * This will not invoke `shouldComponentUpdate`, but it will invoke
  * `componentWillUpdate` and `componentDidUpdate`.
+ * // forceUpdate 方法不会执行 shouldComponentUpdate 但是会执行 componentWillUpdate 和 componentDidUpdate
  *
  * @param {?function} callback Called after update is complete.
  * @final
  * @protected
  */
 Component.prototype.forceUpdate = function(callback) {
-  this.updater.enqueueForceUpdate(this, callback, 'forceUpdate');
+  this.updater.enqueueForceUpdate(this, callback, "forceUpdate");
 };
 
 /**
@@ -91,26 +97,26 @@ Component.prototype.forceUpdate = function(callback) {
 if (__DEV__) {
   const deprecatedAPIs = {
     isMounted: [
-      'isMounted',
-      'Instead, make sure to clean up subscriptions and pending requests in ' +
-        'componentWillUnmount to prevent memory leaks.',
+      "isMounted",
+      "Instead, make sure to clean up subscriptions and pending requests in " +
+        "componentWillUnmount to prevent memory leaks."
     ],
     replaceState: [
-      'replaceState',
-      'Refactor your code to use setState instead (see ' +
-        'https://github.com/facebook/react/issues/3236).',
-    ],
+      "replaceState",
+      "Refactor your code to use setState instead (see " +
+        "https://github.com/facebook/react/issues/3236)."
+    ]
   };
   const defineDeprecationWarning = function(methodName, info) {
     Object.defineProperty(Component.prototype, methodName, {
       get: function() {
         console.warn(
-          '%s(...) is deprecated in plain JavaScript React classes. %s',
+          "%s(...) is deprecated in plain JavaScript React classes. %s",
           info[0],
-          info[1],
+          info[1]
         );
         return undefined;
-      },
+      }
     });
   };
   for (const fnName in deprecatedAPIs) {
@@ -135,9 +141,11 @@ function PureComponent(props, context, updater) {
 }
 
 const pureComponentPrototype = (PureComponent.prototype = new ComponentDummy());
+// 设置 pureComponentPrototype 构造函数为 PureComponent
 pureComponentPrototype.constructor = PureComponent;
 // Avoid an extra prototype jump for these methods.
 Object.assign(pureComponentPrototype, Component.prototype);
+// 标识纯组件
 pureComponentPrototype.isPureReactComponent = true;
 
-export {Component, PureComponent};
+export { Component, PureComponent };
