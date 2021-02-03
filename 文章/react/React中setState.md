@@ -84,12 +84,12 @@ this.setState((state) => {
 ```javascript
 // 如果期望链式调用，下面就可以实现
 changeValue = v => {
- this.setState(state => ({ counter: state.counter + v }));
+  this.setState(state => ({ counter: state.counter + v }));
 };
 
 setCounter = () => {
- this.changeValue(1);
- this.changeValue(2);
+  this.changeValue(1);
+  this.changeValue(2);
 };
 ```
 
